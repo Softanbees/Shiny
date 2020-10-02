@@ -1,0 +1,233 @@
+---
+title: "R Shiny"
+author: "SOFTANBEES TECHNOLOGIES PVT. LTD."
+
+output: 
+ html_document:
+    toc: true
+    toc_float: true
+---
+\
+\
+<h1>**Concepts of UI and Server of Shiny**</h1>
+\
+\
+<h2> UI & Server</h2>\
+\
+A Shiny application is simply a directory containing a user-interface definition, a server script, and any additional data, scripts, or other resources required to support the application.
+\
+
+\
+**How does a shiny server work?**\
+
+Shiny Server is a back end program that makes a big difference. It builds a web server specifically designed to host Shiny apps. ... Shiny Server will host each app at its own web address and automatically start the app when a user visits the address. When the user leaves, Shiny Server will automatically stop the app.
+
+\
+
+<h1>**What is Shiny?**</h1>\
+\
+Shiny is an R package that allows you to easily build interactive web applications. The benefit of using Shiny is that it makes it possible to extend your R code to the web that would essentially help to expand its usability to a wider community **(from being used by a single user to being used by hundreds or thousands of users via the internet).**
+
+Aside from the functionalities provided by the Shiny package, there are several extension packages that supplements the functionality of Shiny such as shinythemes, shinydashboard, shinyjs, etc.
+\
+
+
+**What is shiny used for?**\
+\
+
+Shiny is an open source R package that provides an elegant and powerful web framework for building web applications using R. Shiny helps you turn your analyses into interactive web applications without requiring HTML, CSS, or JavaScript knowledge.
+\
+
+
+**What Can You Build with Shiny?**\
+
+That’s a great question! The following are some starter ideas and I’m sure you can think of several more.
+
+- Machine learning powered web application\
+
+- Data-driven dashboards\
+
+- Data collection forms\
+
+
+There are tons of additional examples at the Shiny Gallery.
+
+\
+
+## **Structure of a Shiny Web App**
+\
+
+The Shiny web app is comprised of 3 components:
+
+**1. User interface (ui.R) —** The UI is the frontend that accepts user input values.\
+
+**2. Server function (server.R) —** The Server is the backend that process these input values to finally produce the output results that are finally displayed on the website.\
+
+**3. shinyApp function —** The app itself that combines the UI and server components together.\
+
+\
+
+# **Code of the Shiny Web App**
+\
+
+Now, comes the fun part and let’s have a look at the code of the Shiny web app that we are going to be building today (shown below).
+\
+
+```{r}
+# Load R packages
+library(shiny)
+library(shinythemes)
+
+  # Define UI
+  ui <- fluidPage(theme = shinytheme("cerulean"),
+    navbarPage(
+
+      "My first app",
+      tabPanel("Navbar 1",
+               sidebarPanel(
+                 tags$h3("Input:"),
+                 textInput("txt1", "Given Name:", ""),
+                 textInput("txt2", "Surname:", ""),
+                 
+               ), # sidebarPanel
+               mainPanel(
+                            h1("Header 1"),
+                            
+                            h4("Output 1"),
+                            verbatimTextOutput("txtout"),
+               ) # mainPanel
+               
+      ), # Navbar 1, tabPanel
+      tabPanel("Navbar 2", "This panel is intentionally left blank"),
+      tabPanel("Navbar 3", "This panel is intentionally left blank")
+  
+    ) # navbarPage
+  ) # fluidPage
+
+  # Define server function  
+  server <- function(input, output) {
+    
+    output$txtout <- renderText({
+      paste( input$txt1, input$txt2, sep = " " )
+    })
+  }
+  
+  # Create Shiny object
+  shinyApp(ui = ui, server = server)
+```
+
+\
+\
+
+# **Running the Shiny Web App**
+\
+
+Now, let’s run the web application.\
+
+**Step 1.** Go ahead and fire up your RStudio.\
+
+**Step 2.** Click on File → New File → R Script and paste the entire block of code shown above and save it as app.R (or you can download the app.R file).\
+
+**Step 3.** Click on the Run App button (shown below by the white circle below) that is located at the top right of the File Panel.\
+\
+\
+
+
+
+\
+\
+<h2>Line by Line Explanation of the Code</h2>
+\
+The code shown above has been commented to label the major sections of the code as follows:
+\
+
+**- Load R packages (Line 1),**\
+
+**- Define UI (Line 5),**\
+
+**- Define server function (Line 31)**\
+
+**- Create Shiny object (Line 39)**\
+
+Now, we will be covering the above 4 sections in more depth in the forthcoming sub-sections.
+
+
+\
+<h2>Load R packages</h2>
+\
+
+**Line 2 —** Load the shiny package\
+
+**Line 3 —** Load the shinythemes package
+
+
+\
+\
+<h2>Define UI</h2>
+\
+
+- **Line 6 —** The fluidPage() function creates fluid page layouts whereby the elements can scale to occupy the available width of the browser. All UI elements are contained within the fluidPage() function. The first input argument that we use is the theme option where we define the use of the cerulean theme from the shinytheme R package.
+(Note: The closing parenthesis is on Line 29).\
+\
+
+- **Line 7 —** As the name implies, the navbarPage() function creates a page with a top level navigation bar.\
+
+- **Line 9 —** The name of the web app is defined to be “My first app”.\
+
+- **Line 10 —** Here we define the tab panel using the tabPanel() function. This represents the first of three tab panels and thus we define the tab panel to be “Navbar 1”.
+\
+
+- **Line 11 —** Here we make use of the sidebarPanel() function (closing parenthesis is on Line 16) so that the web app can have a sidebar panel on the left of the web app that accepts user input parameters. Line 12 — The HTML tag tags$h3 is used to provide the sidebar panel the subsubheading title of “Input:”.
+
+\
+
+- **Lines 13-14—** The textInput() function is used to accept input values from users in the form of a text field. The input arguments contained within the textInput() function includes the (1) variable name (e.g. txt1 or txt2), (2) heading that is displayed above the text field (e.g. “Given Name:” and “Surname:”) and (3)
+(Note: The closing parenthesis is on Line 28).\
+
+- **Line 17 —** Here we make use of the mainPanel() function (closing parenthesis is on Line 22).\
+
+- **Line 18 —** Displays the heading of “Header 1” by using the h1() tag function.\
+
+- **Line 20 —** Displays the subsubsubheading (not a typo but to signify the hierarchy of the headings) of “Output1” by using the h4() tag function.\
+
+- **Line 21 —** Displays the output value which is obtained by combining the input values (Given Name and Surname) together.
+
+\
+
+- **Lines 25–26 —** The two remaining tab panels are displayed via the tabPanel() function on these 2 lines. The first input argument is the name of the tab panel which is “Navbar 2” or “Navbar 3” while the second input argument is “This panel is intentionally left blank”. As a result, upon clicking on these 2 tab panels we will see the message “This panel is intentionally left blank” which are the content of these 2 tab panels.
+\
+\
+\
+<h2>Define server function</h2>\
+\
+
+- **Line 32 —** Defines the server whereby the input and output variables are essentially connected via reactivity (i.e. changes in the input value will instantaneously or reactively lead to updating of the output value).
+
+\
+
+- **Line 34–36 —** As shown in the above cartoon illustration, input values coming from input$txt1 and input$txt2 (i.e. corresponding to the Given Name and Surname, respectively) as entered by the user are assigned to the output$txtout variable (i.e. the processed output value) that will be sent back to the UI for display in the Output text box (Line 21). Particularly, the Given Name and Surname will be combined together via the paste() function whereby the input arguments are the txt1 and txt2 variables from the text input of UI (i.e. the input$txt1 and input$txt2 on Line 35)
+Make note that output$txtout on Line 34–36 (from the Server function) is the same variable as txtout on Line 21 (from the UI function). Likewise, txt1 and txt2 on Lines 13 and 14 (from the UI function) are the same variables as input$txt1 and input$txt2 (from the Server function).
+
+\
+\
+<h2>Create Shiny object</h2>
+\
+
+- **Line 40 —** The shinyApp() function takes as input argument the ui and server variables defined above and fuses them together to build the actual Shiny web app that we finally see.
+\
+\
+\
+\
+
+
+  **" Congratulations! You have now successfully created your very first Shiny Web App in R! "**
+
+\
+\
+
+                                         THANK YOU!
+
+
+
+
+
